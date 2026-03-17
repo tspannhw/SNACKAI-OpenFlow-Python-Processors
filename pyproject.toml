@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling", "hatch-datavolo-nar"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dev.datainmotion.gtfs"
+dynamic = ["version"]
+description = "GTFS"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "U.N. Owen", email = "void@some.where" },
+]
+
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Hatch",
+]
+
+dependencies = ["gtfs-realtime-bindings"]
+
+[project.urls]
+Documentation = "https://github.com/tspannhw/gtfs#readme"
+Issues = "https://github.com/tspannhw/gtfs/issues"
+Source = "https://github.com/tspannhw/gtfs"
+
+[tool.hatch.build.targets.nar]
+packages = ["src/gtfs"]
+
+[tool.hatch.version]
+path = "src/gtfs/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/gtfs tests}"
+
+[tool.coverage.run]
+source_pkgs = ["gtfs", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/gtfs/__about__.py",
+]
+
+[tool.coverage.paths]
+gtfs = ["src/gtfs", "*/gtfs/src/gtfs"]
+tests = ["tests", "*/gtfs/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
